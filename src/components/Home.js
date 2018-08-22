@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 
 import * as actions from '../actions';
+import NameDialog from './NameDialog';
 
 const styles = {
   root: {
@@ -68,6 +69,14 @@ class Home extends Component {
     this.props.fetchLeaders();
   }
 
+  componentDidUpdate(prevProps) {
+    console.log(prevProps.clicks.score, this.props.clicks.score);
+    // get leaderboard from '/api/leaderboard'
+    if (prevProps.clicks.score !== this.props.clicks.score) {
+      this.props.fetchLeaders();
+    }
+  }
+
   clickPress() {
     this.props.addClick();
   }
@@ -89,11 +98,12 @@ class Home extends Component {
   renderScore() {
     clearInterval(this.myInterval);
     return (
-      <div className={this.props.classes.message}>
-        Nice try, you clicked {this.props.clicks.clickCount} times!
-        <br />
-        <p>But that&apos;s no match for Brain</p>
-      </div>
+      <NameDialog
+        clicks={this.props.clicks}
+        postScore={this.props.postScore}
+        reset={this.props.reset}
+        open
+      />
     );
   }
 
@@ -188,16 +198,6 @@ class Home extends Component {
             <Card className={classes.leaderboard}>
               <h1>LEADERBOARD</h1>
               {leaders && this.renderLeaders(leaders)}
-              {/* <ol>
-                <li>
-                  <span>
-                    Username: <strong>Brain</strong>
-                  </span>
-                  <span style={{ paddingLeft: 5 }}>
-                    Score: <strong>?????</strong>
-                  </span>
-                </li>
-              </ol> */}
             </Card>
           </Grid>
           <Grid item lg={12}>

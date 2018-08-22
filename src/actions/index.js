@@ -1,5 +1,25 @@
 import axios from 'axios';
-import { ADD_CLICK, RESET, TICK, SET_TIME, FETCH_LEADERS } from './types';
+import {
+  ADD_CLICK,
+  RESET,
+  TICK,
+  SET_TIME,
+  FETCH_LEADERS,
+  POST_SCORE,
+} from './types';
+
+export const postScore = (values) => async (dispatch) => {
+  const data = {
+    username: values.username,
+    score: values.score,
+  };
+  console.log('posting score', data);
+  const response = await axios.post('/api/leaderboard', data);
+  dispatch({
+    type: POST_SCORE,
+    data,
+  });
+};
 
 export const fetchLeaders = () => async (dispatch) => {
   const response = await axios.get('/api/leaderboard');

@@ -4,12 +4,14 @@ import {
   TICK,
   SET_TIME,
   FETCH_LEADERS,
+  POST_SCORE,
 } from '../actions/types';
 
 const initialState = {
   leaders: null,
   clickCount: 0,
   timer: 10,
+  score: null,
 };
 
 export default function(state = initialState, action) {
@@ -26,6 +28,7 @@ export default function(state = initialState, action) {
       };
     case RESET:
       return {
+        ...state,
         clickCount: 0,
         timer: 60,
       };
@@ -38,6 +41,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         timer: action.value,
+      };
+    case POST_SCORE:
+      console.log('POST SCORE', action);
+      return {
+        ...state,
+        score: action.data.score,
       };
     default:
       return state;
